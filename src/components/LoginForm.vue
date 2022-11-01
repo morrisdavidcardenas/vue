@@ -1,0 +1,108 @@
+<template>
+	<div class="fcc m-0">
+		<form action="" @submit="checkForm">
+			<FormItem v-if="errors.length">
+				<b>Please correct the following error(s):</b>
+					<div v-for="error in errors" :key="error">
+						{{ error }}
+					</div>
+			</FormItem>
+			<div class="fc my-3">
+				<label for="inputEmail" class="form-label text-start">Email</label>
+				<input type="text" class="form-control" id="inputEmail" placeholder="you@email.com" 
+					v-model="email"/>
+			</div>
+			<div class="fc my-3">
+				<label class="form-label text-start">Contraseña</label>
+				<input type="password" class="form-control" v-model="password" required name="password">
+			</div> 
+			<button type="submit" class="btn btn-success">INGRESAR</button>
+		</form>
+	</div>
+</template>
+
+<script>
+export default {
+	name: "LoginForm",
+	components: {},	
+	data() {
+		return {
+			errors: [],
+			email: '',
+			password: '',
+			users: 
+			[
+					{
+						email: "morris.alejandro@gmail.com",
+						password: "123456",
+						isAdmin: false
+					},
+					{
+						email: "alison.jpq@gmail.com",
+						password: "123456",
+						isAdmin: true
+					}					
+			]
+	}},
+	methods:{
+		passwordValidator: function (value) {
+			let res = true
+			if (value.length > 8) {
+				res = false
+			}
+			return res;
+		},
+		nameValidator: function (value) {
+			let res = true
+			if (!value.includes('@')) {
+				res = false
+			}
+			if (!value.includes('.com')) {
+				res = false
+			}
+			return res;
+		},
+		checkForm: function (e) {
+			e.preventDefault();
+			this.errors = [];
+			if (!this.email) {
+				this.errors.push("Email required.");
+			} else if (!this.validateEmail(this.email)) {
+				this.errors.push('Valid email required.');
+			}
+			if (this.password.length < 6) {
+				this.errors.push("Password must have 6 characters.");
+			}
+			if (!this.errors.length) {
+				this.validateLogin(this.email);
+			}
+		},
+		validateEmail(email){
+			var re = /\S+@\S+\.\S+/;
+			if(email.match(re)) {
+				return true;
+			} else {
+				return false;
+			}
+		},
+		validateLogin(email){
+			let findUser = this.users.find(x => x.email === email);
+			if (findUser === undefined) {
+				alert("usuario o login no autorizado");
+			} else {
+				localStorage.isAdmin = findUser.isAdmin;
+				if (findUser.isAdmin) {
+					alert("eres admin")					
+				}
+				else {
+					alert("no eres admin")					
+				}
+				this.$router.replace('/shoppingCart');
+			}
+		},		
+	},
+};
+</script>
+
+<style scoped>
+</style>

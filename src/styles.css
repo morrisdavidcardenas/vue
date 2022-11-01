@@ -1,0 +1,26 @@
+.relative{
+	position: relative;
+}
+.absolute{
+	position: absolute;
+}
+.fcc {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+.fc {
+	display: flex;
+	flex-direction: column;
+}
+.bold{
+	font-weight: bold;
+	background-color: bisque;
+}
+.clickable{
+	cursor: pointer;
+}
+.w-fit-content{
+	width: fit-content;
+}
