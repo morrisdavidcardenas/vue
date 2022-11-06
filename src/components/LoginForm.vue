@@ -29,20 +29,7 @@ export default {
 		return {
 			errors: [],
 			email: '',
-			password: '',
-			users: 
-			[
-					{
-						email: "morris.alejandro@gmail.com",
-						password: "123456",
-						isAdmin: false
-					},
-					{
-						email: "alison.jpq@gmail.com",
-						password: "123456",
-						isAdmin: true
-					}					
-			]
+			password: ''
 	}},
 	methods:{
 		passwordValidator: function (value) {
@@ -74,7 +61,7 @@ export default {
 				this.errors.push("Password must have 6 characters.");
 			}
 			if (!this.errors.length) {
-				this.validateLogin(this.email);
+				this.validateLogin(this.email, this.password);
 			}
 		},
 		validateEmail(email){
@@ -85,19 +72,25 @@ export default {
 				return false;
 			}
 		},
-		validateLogin(email){
-			let findUser = this.users.find(x => x.email === email);
+		async validateLogin(email,password){
+			let userList = await this.axios.get("https://63422eecba4478d47838d00e.mockapi.io/user");
+			console.log(userList.data);
+			let findUser = userList.data.find(x => x.email === email);
 			if (findUser === undefined) {
-				alert("usuario o login no autorizado");
+				alert("usuario o password incorrectos");
 			} else {
-				localStorage.isAdmin = findUser.isAdmin;
-				if (findUser.isAdmin) {
-					alert("eres admin")					
+				if (findUser.password === password) {
+					localStorage.isAdmin = findUser.isAdmin;
+					if (findUser.isAdmin) {
+						alert("eres admin")					
+					}
+					else {
+						alert("no eres admin")					
+					}
+					this.$router.replace('/shoppingCart');
+				} else {
+					alert("usuario o password incorrectos");					
 				}
-				else {
-					alert("no eres admin")					
-				}
-				this.$router.replace('/shoppingCart');
 			}
 		},		
 	},

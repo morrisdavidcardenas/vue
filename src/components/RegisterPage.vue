@@ -26,6 +26,9 @@
 					<label for="inputEmail" class="form-label text-start">Email</label>
 					<input type="email" class="form-control" id="inputEmail" placeholder="you@email.com" 
 					v-model="email"/>
+					<label for="inputPassword" class="form-label text-start">Password</label>
+					<input type="password" class="form-control" id="inputPassword" placeholder="Password" 
+					v-model="password"/>					
                     <br />
 					<b-form-checkbox
 						id="checkbox-1"
@@ -59,11 +62,12 @@ export default {
 	data() {
 		return {
 			errors: [],
+			people: [],			
 			name: "",
 			lastName: "",
-			email: "",
 			age:"",
-			people: [],
+			email: "",
+			password: "",						
             isAdmin: false
 		}
 	},
@@ -85,13 +89,16 @@ export default {
 			} else if (!this.validateEmail(this.email)) {
 				this.errors.push('Valid email required.');
 			}
+			if (!this.password) {
+				this.errors.push("Password required.");
+			}			
 			if (!this.errors.length) {
-				alert(this.isAdmin);
 				let user = {
 					"name": this.name,
 					"lastName": this.lastName,
 					"age": this.age,
 					"email": this.email,
+					"password": this.password,					
 					"isAdmin": this.isAdmin
 				}
 				await this.axios.post("https://63422eecba4478d47838d00e.mockapi.io/user", user);
@@ -101,8 +108,9 @@ export default {
         cleanFields(){
 			this.name = "";
 			this.lastName = "";			
+			this.age = 0;						
 			this.email = "";
-			this.age = 0;			
+			this.password = "";			
         },
 		validateEmail(email){
 			var re = /\S+@\S+\.\S+/;

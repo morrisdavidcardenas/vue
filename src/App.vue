@@ -22,7 +22,7 @@
 								<router-link to="/registerPage">Register</router-link>
 							</div>	
 							<div class="col-3">
-								<router-link to="/userList" v-if="!isAdmin">User</router-link>
+								<router-link to="/userList">User</router-link>
 							</div>	
 							<div class="col-3">
 								<router-link to="/shoppingCart">Shopping Cart</router-link>
@@ -37,8 +37,6 @@
 
 <script>
 
-import NavBar from "./components/NavBar.vue";
-
 export default {
 	name: "App",
 	components: {
@@ -49,10 +47,21 @@ export default {
 	},
 	computed:{
 		isAdmin(){
-			if (localStorage.isAdmin === undefined) {
-				localStorage.isAdmin = false;
+			let isAdmin = null;
+			switch (localStorage.isAdmin) {
+				case undefined:
+					isAdmin = false;					
+					break;
+				case "false":
+					isAdmin = false;					
+					break;				
+				case "true":
+					isAdmin = true;					
+					break;									
+				default:
+					break;
 			}
-			return localStorage.isAdmin
+			return isAdmin;
 		}
 	},	
 };
